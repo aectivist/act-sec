@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "portfolio-site",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "site", "run", "dev"],
+      "port": 4321
+    },
+    {
+      "name": "admin-dashboard",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "admin", "run", "dev"],
+      "port": 4322
+    }
+  ]
+}
