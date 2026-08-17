@@ -1,36 +1,40 @@
 /* ==========================================================================
-   Theme tokens — "cyber arc-reactor" blue.
+   Theme tokens — "red-team terminal": black/navy depth, green as the
+   safe/interactive signal, red held back for danger and tension.
    Overridable at runtime via src/site.config.ts -> themeOverrides, applied
    as inline custom properties on <html> in BaseLayout.astro.
    ========================================================================== */
 
 :root {
   /* base surfaces */
-  --bg: #05070d;
-  --bg-elevated: #0a0f1c;
-  --bg-card: #0d1424;
-  --border: #1b2740;
-  --border-soft: #141d33;
+  --bg: #000000;
+  --bg-elevated: #0a0e28;
+  --bg-card: #0d1436;
+  --border: #1e2a66;
+  --border-soft: #141a44;
+  --navy: #121d56;
 
   /* text */
-  --text: #dce7f5;
-  --text-muted: #7b8bab;
-  --text-dim: #4d5a78;
+  --text: #e4e8ee;
+  --text-muted: #8891ab;
+  --text-dim: #4d5580;
 
-  /* accent — Iron Man arc-reactor blue */
-  --accent: #2dd4ff;
-  --accent-soft: #0ea5e9;
-  --accent-dim: #0b3a52;
-  --accent-glow: rgba(45, 212, 255, 0.35);
+  /* accent — safe/interactive green: this is what "you're safe here" feels like */
+  --accent: #16a511;
+  --accent-soft: #22cc1c;
+  --accent-dim: #0a2e08;
+  --accent-glow: rgba(22, 165, 17, 0.35);
 
-  /* rare accents, used sparingly */
-  --hazard: #ff5c5c;      /* Evangelion/NERV nod — used only in the glitch-hover effect */
+  /* danger — held back, used only for tension: glitch flicker, Hard/Insane, alerts */
+  --hazard: #aa1616;
+  --hazard-bright: #ff3232;
+  --hazard-glow: rgba(170, 22, 22, 0.35);
 
-  /* difficulty badges, HTB/THM-style */
-  --diff-easy: #2dd4ff;
-  --diff-medium: #ffb84d;
-  --diff-hard: #ff7a4d;
-  --diff-insane: #ff5c8a;
+  /* difficulty badges: green (safe) ramping to bright red (danger) */
+  --diff-easy: #16a511;
+  --diff-medium: #3652c9;
+  --diff-hard: #aa1616;
+  --diff-insane: #ff3232;
 
   --font-display: 'Chakra Petch', 'Rajdhani', system-ui, sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;
@@ -38,6 +42,18 @@
 
   --radius: 6px;
   --shadow-glow: 0 0 24px var(--accent-glow);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 * {
@@ -60,8 +76,8 @@ body {
     radial-gradient(ellipse 80% 50% at 50% -10%, var(--accent-dim), transparent),
     repeating-linear-gradient(
       0deg,
-      rgba(45, 212, 255, 0.015) 0px,
-      rgba(45, 212, 255, 0.015) 1px,
+      rgba(22, 165, 17, 0.02) 0px,
+      rgba(22, 165, 17, 0.02) 1px,
       transparent 1px,
       transparent 3px
     );
@@ -251,9 +267,11 @@ code, pre {
   width: 9px;
   height: 9px;
   border-radius: 50%;
-  background: var(--accent-dim);
-  border: 1px solid var(--accent-soft);
 }
+
+.term-dot:nth-child(1) { background: var(--hazard); border: 1px solid var(--hazard-bright); }
+.term-dot:nth-child(2) { background: var(--navy); border: 1px solid #3652c9; }
+.term-dot:nth-child(3) { background: var(--accent); border: 1px solid var(--accent-soft); }
 
 .term-path {
   color: var(--text-dim);
