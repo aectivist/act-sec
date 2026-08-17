@@ -24,8 +24,7 @@
   --accent-glow: rgba(45, 212, 255, 0.35);
 
   /* rare accents, used sparingly */
-  --rune-gold: #c9a94f;   /* Zelda / Elden Ring nod — dividers only */
-  --hazard: #ff5c5c;      /* Evangelion/NERV nod — alerts/warnings only */
+  --hazard: #ff5c5c;      /* Evangelion/NERV nod — used only in the glitch-hover effect */
 
   /* difficulty badges, HTB/THM-style */
   --diff-easy: #2dd4ff;
@@ -180,23 +179,6 @@ code, pre {
 .hud-frame:hover::before,
 .hud-frame:hover::after {
   opacity: 1;
-}
-
-/* -------------------------------------------------------------------------
-   Rune divider (Zelda / Elden Ring nod) — thin, used sparingly.
-   ------------------------------------------------------------------------- */
-.rune-divider {
-  border: none;
-  height: 1px;
-  margin: 2.5rem 0;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    var(--rune-gold) 15%,
-    var(--rune-gold) 85%,
-    transparent
-  );
-  opacity: 0.4;
 }
 
 /* -------------------------------------------------------------------------
