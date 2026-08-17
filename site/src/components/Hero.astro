@@ -88,6 +88,7 @@ const asciiEmblem = `⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀�
 
   .term-body {
     position: relative;
+    container-type: inline-size;
   }
 
   .ascii-emblem {
@@ -119,7 +120,14 @@ const asciiEmblem = `⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀�
 
   .ascii-banner {
     margin: 0 0 1.5rem;
-    font-size: clamp(2px, 0.6vw, 6px);
+    /* vw-based fallback for browsers without container query units, no
+       lower floor so it keeps shrinking rather than overflowing. */
+    font-size: min(0.6vw, 6px);
+    /* cqw sizes off the actual available width inside .term-body (which
+       has fixed padding eating into it) rather than the raw viewport, so
+       this stays accurate even at extreme zoom/narrow widths where vw
+       badly overestimates the room actually available. */
+    font-size: min(0.75cqw, 6px);
     line-height: 1.15;
     color: var(--accent);
     text-shadow: 0 0 12px var(--accent-glow);
