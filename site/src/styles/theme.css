@@ -13,6 +13,7 @@
   --border: #1e2a66;
   --border-soft: #141a44;
   --navy: #121d56;
+  --navy-dim: #0a1030;
 
   /* text */
   --text: #e4e8ee;
@@ -73,7 +74,7 @@ body {
 body {
   min-height: 100vh;
   background-image:
-    radial-gradient(ellipse 80% 50% at 50% -10%, var(--accent-dim), transparent),
+    radial-gradient(ellipse 80% 50% at 50% -10%, var(--navy-dim), transparent),
     repeating-linear-gradient(
       0deg,
       rgba(22, 165, 17, 0.02) 0px,
