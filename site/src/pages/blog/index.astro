@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ModuleCard from '../../components/ModuleCard.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+---
+
+<BaseLayout title="Blog" description="Write-ups and modules on offensive security and secure development.">
+  <section class="section container">
+    <div class="page-head">
+      <p class="mono kicker">// modules.list</p>
+      <h1>Blog / Modules</h1>
+      <p class="text-muted">All write-ups, logged like a training path.</p>
+    </div>
+    {posts.length > 0 ? (
+      <div class="grid grid-3">
+        {posts.map((post) => (
+          <ModuleCard
+            slug={post.slug}
+            title={post.data.title}
+            description={post.data.description}
+            category={post.data.category}
+            difficulty={post.data.difficulty}
+            moduleNumber={post.data.moduleNumber}
+            tags={post.data.tags}
+            pubDate={post.data.pubDate}
+          />
+        ))}
+      </div>
+    ) : (
+      <p class="text-dim mono">// no modules published yet</p>
+    )}
+  </section>
+</BaseLayout>
+
+<style>
+  .page-head {
+    margin-bottom: 2.5rem;
+  }
+  .kicker {
+    color: var(--accent-soft);
+    font-size: 0.85rem;
+    margin-bottom: 0.4rem;
+  }
+</style>

@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CertBadge from '../../components/CertBadge.astro';
+import { getCollection } from 'astro:content';
+
+const certifications = (await getCollection('certifications')).sort(
+  (a, b) => b.data.dateIssued.valueOf() - a.data.dateIssued.valueOf(),
+);
+---
+
+<BaseLayout title="Certifications" description="Industry certifications in offensive and defensive security.">
+  <section class="section container">
+    <div class="page-head">
+      <p class="mono kicker">// certifications.list</p>
+      <h1>Certifications</h1>
+      <p class="text-muted">Credentials earned across offensive security and IT.</p>
+    </div>
+    {certifications.length > 0 ? (
+      <div class="grid grid-3">
+        {certifications.map((cert) => (
+          <CertBadge
+            title={cert.data.title}
+            issuer={cert.data.issuer}
+            dateIssued={cert.data.dateIssued}
+            credentialId={cert.data.credentialId}
+            credentialUrl={cert.data.credentialUrl}
+            skills={cert.data.skills}
+          />
+        ))}
+      </div>
+    ) : (
+      <p class="text-dim mono">// no certifications published yet</p>
+    )}
+  </section>
+</BaseLayout>
+
+<style>
+  .page-head {
+    margin-bottom: 2.5rem;
+  }
+  .kicker {
+    color: var(--accent-soft);
+    font-size: 0.85rem;
+    margin-bottom: 0.4rem;
+  }
+</style>

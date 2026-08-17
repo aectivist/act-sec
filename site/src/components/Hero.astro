@@ -1,0 +1,100 @@
+---
+import { siteConfig } from '../site.config';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<section class="hero">
+  <div class="container hero-inner">
+    <p class="mono kicker">// identity.init</p>
+    <h1 class="glitch" data-text={siteConfig.name}>{siteConfig.name}</h1>
+    <div class="titles mono">
+      {siteConfig.titles.map((t, i) => (
+        <>
+          <span>{t}</span>
+          {i < siteConfig.titles.length - 1 && <span class="sep">/</span>}
+        </>
+      ))}
+    </div>
+    <p class="about">{siteConfig.about}</p>
+    <div class="hero-actions">
+      <a class="btn" href="#modules">View modules</a>
+      <a class="btn" href={base + '/contact'}>Get in touch</a>
+    </div>
+  </div>
+  <div class="scanline" aria-hidden="true"></div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    padding: 6rem 0 3rem;
+    overflow: hidden;
+  }
+
+  .hero-inner {
+    position: relative;
+    z-index: 1;
+  }
+
+  .kicker {
+    color: var(--accent-soft);
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.5rem;
+  }
+
+  h1 {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    line-height: 1.05;
+    margin-bottom: 0.75rem;
+    text-shadow: 0 0 30px var(--accent-glow);
+  }
+
+  .titles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    color: var(--accent);
+    font-size: 1rem;
+    letter-spacing: 0.04em;
+    margin-bottom: 1.5rem;
+  }
+
+  .sep {
+    color: var(--text-dim);
+  }
+
+  .about {
+    max-width: 640px;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 2rem;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .scanline {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      var(--accent-glow) 50%,
+      transparent 100%
+    );
+    opacity: 0.05;
+    height: 200%;
+    animation: scan 8s linear infinite;
+  }
+
+  @keyframes scan {
+    0% { transform: translateY(-50%); }
+    100% { transform: translateY(0%); }
+  }
+</style>

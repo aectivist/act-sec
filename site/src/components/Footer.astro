@@ -1,0 +1,71 @@
+---
+import { siteConfig } from '../site.config';
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="hazard-strip"></div>
+  <div class="container footer-inner">
+    <div class="footer-col">
+      <span class="mono label">// contact</span>
+      <a href={`mailto:${siteConfig.contact.email}`}>{siteConfig.contact.email}</a>
+      <span class="text-muted">{siteConfig.contact.location}</span>
+    </div>
+    <div class="footer-col">
+      <span class="mono label">// links</span>
+      <div class="socials">
+        {siteConfig.socials.map((s) => (
+          <a href={s.url} target="_blank" rel="noopener noreferrer">{s.label}</a>
+        ))}
+      </div>
+    </div>
+    <div class="footer-col footer-meta">
+      <span class="mono text-dim">© {year} {siteConfig.name}. All systems nominal.</span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: 4rem;
+    border-top: 1px solid var(--border-soft);
+    background: var(--bg-elevated);
+  }
+
+  .footer-inner {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    padding: 2.5rem 1.5rem;
+  }
+
+  .footer-col {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .label {
+    color: var(--accent-soft);
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.3rem;
+  }
+
+  .socials {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .footer-meta {
+    justify-content: flex-end;
+    align-items: flex-start;
+  }
+
+  @media (max-width: 640px) {
+    .footer-meta {
+      align-items: flex-start;
+    }
+  }
+</style>

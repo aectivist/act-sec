@@ -1,0 +1,105 @@
+---
+import { siteConfig } from '../site.config';
+
+const currentPath = new URL(Astro.request.url).pathname;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+function isActive(href: string) {
+  const full = (base + href).replace(/\/$/, '') || '/';
+  const current = currentPath.replace(/\/$/, '') || '/';
+  return current === full || (href !== '/' && current.startsWith(full));
+}
+---
+
+<header class="site-nav">
+  <div class="container nav-inner">
+    <a class="brand" href={base + '/'}>
+      <img src={base + siteConfig.logo} alt={`${siteConfig.brand} logo`} width="28" height="28" />
+      <span class="brand-name mono">{siteConfig.brand}</span>
+    </a>
+    <nav>
+      <ul>
+        {siteConfig.nav.map((item) => (
+          <li>
+            <a href={base + item.href} class:list={{ active: isActive(item.href) }}>
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(5, 7, 13, 0.85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border-soft);
+  }
+
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--text);
+  }
+
+  .brand:hover {
+    text-decoration: none;
+    color: var(--accent);
+  }
+
+  .brand-name {
+    font-size: 0.95rem;
+    letter-spacing: 0.05em;
+  }
+
+  nav ul {
+    display: flex;
+    gap: 1.75rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  nav a {
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 0.4rem 0;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+
+  nav a:hover {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  nav a.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  @media (max-width: 640px) {
+    nav ul {
+      gap: 1rem;
+    }
+    .brand-name {
+      display: none;
+    }
+  }
+</style>

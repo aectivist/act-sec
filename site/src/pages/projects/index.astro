@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { getCollection } from 'astro:content';
+
+const projects = (await getCollection('projects')).sort(
+  (a, b) => Number(b.data.featured) - Number(a.data.featured),
+);
+---
+
+<BaseLayout title="Projects" description="Projects in offensive security, secure development, and infrastructure.">
+  <section class="section container">
+    <div class="page-head">
+      <p class="mono kicker">// projects.list</p>
+      <h1>Projects</h1>
+      <p class="text-muted">Tools, labs, and platforms I've built and shipped.</p>
+    </div>
+    {projects.length > 0 ? (
+      <div class="grid grid-3">
+        {projects.map((project) => (
+          <ProjectCard
+            title={project.data.title}
+            description={project.data.description}
+            tags={project.data.tags}
+            role={project.data.role}
+            dateRange={project.data.dateRange}
+            githubUrl={project.data.githubUrl}
+            liveUrl={project.data.liveUrl}
+            featured={project.data.featured}
+          />
+        ))}
+      </div>
+    ) : (
+      <p class="text-dim mono">// no projects published yet</p>
+    )}
+  </section>
+</BaseLayout>
+
+<style>
+  .page-head {
+    margin-bottom: 2.5rem;
+  }
+  .kicker {
+    color: var(--accent-soft);
+    font-size: 0.85rem;
+    margin-bottom: 0.4rem;
+  }
+</style>

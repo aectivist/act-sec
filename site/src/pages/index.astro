@@ -1,0 +1,90 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import ModuleCard from '../components/ModuleCard.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { getCollection } from 'astro:content';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const allPosts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+const latestPosts = allPosts.slice(0, 6);
+
+const allProjects = await getCollection('projects');
+const featuredProjects = allProjects.filter((p) => p.data.featured).slice(0, 3);
+---
+
+<BaseLayout title="Home">
+  <Hero />
+
+  <section id="modules" class="section container">
+    <div class="section-head">
+      <h2 class="glitch" data-text="Modules">Modules</h2>
+      <p class="text-muted">Write-ups and deep dives, logged like training modules.</p>
+    </div>
+    {latestPosts.length > 0 ? (
+      <div class="grid grid-3">
+        {latestPosts.map((post) => (
+          <ModuleCard
+            slug={post.slug}
+            title={post.data.title}
+            description={post.data.description}
+            category={post.data.category}
+            difficulty={post.data.difficulty}
+            moduleNumber={post.data.moduleNumber}
+            tags={post.data.tags}
+            pubDate={post.data.pubDate}
+          />
+        ))}
+      </div>
+    ) : (
+      <p class="text-dim mono">// no modules published yet</p>
+    )}
+    {allPosts.length > 6 && (
+      <div class="see-all">
+        <a href={`${base}/blog`} class="btn">View all modules</a>
+      </div>
+    )}
+  </section>
+
+  <hr class="rune-divider container" />
+
+  {featuredProjects.length > 0 && (
+    <section class="section container">
+      <div class="section-head">
+        <h2>Featured Projects</h2>
+        <p class="text-muted">Selected work in offensive security and secure development.</p>
+      </div>
+      <div class="grid grid-3">
+        {featuredProjects.map((project) => (
+          <ProjectCard
+            title={project.data.title}
+            description={project.data.description}
+            tags={project.data.tags}
+            role={project.data.role}
+            dateRange={project.data.dateRange}
+            githubUrl={project.data.githubUrl}
+            liveUrl={project.data.liveUrl}
+            featured={project.data.featured}
+          />
+        ))}
+      </div>
+      <div class="see-all">
+        <a href={`${base}/projects`} class="btn">View all projects</a>
+      </div>
+    </section>
+  )}
+</BaseLayout>
+
+<style>
+  .section-head {
+    margin-bottom: 2rem;
+  }
+
+  .see-all {
+    margin-top: 2rem;
+    text-align: center;
+  }
+</style>

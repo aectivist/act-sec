@@ -1,0 +1,79 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  tags: string[];
+  role?: string;
+  dateRange?: string;
+  githubUrl?: string;
+  liveUrl?: string;
+  featured?: boolean;
+}
+
+const { title, description, tags, role, dateRange, githubUrl, liveUrl, featured } = Astro.props;
+---
+
+<div class="project-card hud-frame">
+  {featured && <span class="badge badge-accent featured-badge">Featured</span>}
+  <h3>{title}</h3>
+  {(role || dateRange) && (
+    <p class="mono meta text-dim">
+      {role}{role && dateRange && ' · '}{dateRange}
+    </p>
+  )}
+  <p class="text-muted desc">{description}</p>
+  <div class="tags">
+    {tags.map((t) => <span class="badge text-dim">#{t}</span>)}
+  </div>
+  <div class="links">
+    {githubUrl && <a href={githubUrl} target="_blank" rel="noopener noreferrer" class="mono">↳ source</a>}
+    {liveUrl && <a href={liveUrl} target="_blank" rel="noopener noreferrer" class="mono">↳ live</a>}
+  </div>
+</div>
+
+<style>
+  .project-card {
+    position: relative;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .featured-badge {
+    position: absolute;
+    top: -10px;
+    right: 1rem;
+  }
+
+  h3 {
+    font-size: 1.1rem;
+  }
+
+  .meta {
+    font-size: 0.78rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .desc {
+    font-size: 0.9rem;
+    line-height: 1.55;
+    flex-grow: 1;
+    margin-bottom: 1rem;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1rem;
+  }
+
+  .links {
+    display: flex;
+    gap: 1rem;
+    border-top: 1px solid var(--border-soft);
+    padding-top: 0.75rem;
+    font-size: 0.8rem;
+  }
+</style>

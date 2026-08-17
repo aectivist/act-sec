@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PaperCard from '../../components/PaperCard.astro';
+import { getCollection } from 'astro:content';
+
+const papers = (await getCollection('papers')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+---
+
+<BaseLayout title="Papers" description="Research papers and technical write-ups.">
+  <section class="section container">
+    <div class="page-head">
+      <p class="mono kicker">// papers.list</p>
+      <h1>Papers</h1>
+      <p class="text-muted">Research and technical documentation.</p>
+    </div>
+    {papers.length > 0 ? (
+      <div class="grid grid-2">
+        {papers.map((paper) => (
+          <PaperCard
+            title={paper.data.title}
+            description={paper.data.description}
+            date={paper.data.date}
+            pdfPath={paper.data.pdfPath}
+            authors={paper.data.authors}
+            tags={paper.data.tags}
+          />
+        ))}
+      </div>
+    ) : (
+      <p class="text-dim mono">// no papers published yet</p>
+    )}
+  </section>
+</BaseLayout>
+
+<style>
+  .page-head {
+    margin-bottom: 2.5rem;
+  }
+  .kicker {
+    color: var(--accent-soft);
+    font-size: 0.85rem;
+    margin-bottom: 0.4rem;
+  }
+</style>

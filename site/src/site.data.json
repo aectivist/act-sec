@@ -1,0 +1,59 @@
+{
+  "name": "Riel Valdepenas",
+  "brand": "act-sec",
+  "titles": [
+    "Cybersecurity Practitioner",
+    "Aspiring Penetration Tester",
+    "Secure Software Developer"
+  ],
+  "about": "Cybersecurity practitioner with hands-on experience in offensive security, web application security, and secure software development. Holds CompTIA Security+, PJPT, and PNPT certifications. Active participant in regional cybersecurity competitions, including multiple top placements, with a strong interest in penetration testing and application security.",
+  "logo": "/logo.svg",
+  "contact": {
+    "email": "aectevista@gmail.com",
+    "location": "Manila, Philippines"
+  },
+  "socials": [
+    {
+      "label": "GitHub",
+      "url": "https://github.com/aectivist",
+      "icon": "globe"
+    },
+    {
+      "label": "LinkedIn",
+      "url": "https://www.linkedin.com/in/azriel-valerius-atienza-valdepenas-283607283/",
+      "icon": "globe"
+    },
+    {
+      "label": "Cylvern Security",
+      "url": "https://www.cylsec.com",
+      "icon": "globe"
+    }
+  ],
+  "nav": [
+    {
+      "label": "Home",
+      "href": "/"
+    },
+    {
+      "label": "Projects",
+      "href": "/projects"
+    },
+    {
+      "label": "Certifications",
+      "href": "/certifications"
+    },
+    {
+      "label": "Blog",
+      "href": "/blog"
+    },
+    {
+      "label": "Papers",
+      "href": "/papers"
+    },
+    {
+      "label": "Contact",
+      "href": "/contact"
+    }
+  ],
+  "themeOverrides": {}
+}

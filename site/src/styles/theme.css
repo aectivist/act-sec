@@ -1,0 +1,284 @@
+/* ==========================================================================
+   Theme tokens — "cyber arc-reactor" blue.
+   Overridable at runtime via src/site.config.ts -> themeOverrides, applied
+   as inline custom properties on <html> in BaseLayout.astro.
+   ========================================================================== */
+
+:root {
+  /* base surfaces */
+  --bg: #05070d;
+  --bg-elevated: #0a0f1c;
+  --bg-card: #0d1424;
+  --border: #1b2740;
+  --border-soft: #141d33;
+
+  /* text */
+  --text: #dce7f5;
+  --text-muted: #7b8bab;
+  --text-dim: #4d5a78;
+
+  /* accent — Iron Man arc-reactor blue */
+  --accent: #2dd4ff;
+  --accent-soft: #0ea5e9;
+  --accent-dim: #0b3a52;
+  --accent-glow: rgba(45, 212, 255, 0.35);
+
+  /* rare accents, used sparingly */
+  --rune-gold: #c9a94f;   /* Zelda / Elden Ring nod — dividers only */
+  --hazard: #ff5c5c;      /* Evangelion/NERV nod — alerts/warnings only */
+
+  /* difficulty badges, HTB/THM-style */
+  --diff-easy: #2dd4ff;
+  --diff-medium: #ffb84d;
+  --diff-hard: #ff7a4d;
+  --diff-insane: #ff5c8a;
+
+  --font-display: 'Chakra Petch', 'Rajdhani', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+
+  --radius: 6px;
+  --shadow-glow: 0 0 24px var(--accent-glow);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, var(--accent-dim), transparent),
+    repeating-linear-gradient(
+      0deg,
+      rgba(45, 212, 255, 0.015) 0px,
+      rgba(45, 212, 255, 0.015) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+  background-attachment: fixed;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  letter-spacing: 0.02em;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 0.5em;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code, pre {
+  font-family: var(--font-mono);
+}
+
+.container {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* -------------------------------------------------------------------------
+   Glitch-hover heading effect (Serial Experiment Lain nod) — subtle, only
+   on hover, never distracts from readability.
+   ------------------------------------------------------------------------- */
+.glitch {
+  position: relative;
+  display: inline-block;
+}
+
+.glitch:hover::before,
+.glitch:hover::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  background: var(--bg);
+  overflow: hidden;
+}
+
+.glitch:hover::before {
+  color: var(--accent);
+  transform: translate(-2px, 0);
+  clip-path: inset(0 0 60% 0);
+  animation: glitch-shift 0.6s steps(2, end) infinite;
+}
+
+.glitch:hover::after {
+  color: var(--hazard);
+  transform: translate(2px, 0);
+  clip-path: inset(60% 0 0 0);
+  animation: glitch-shift 0.5s steps(2, end) infinite reverse;
+}
+
+@keyframes glitch-shift {
+  0% { transform: translate(-2px, 0); }
+  50% { transform: translate(2px, 1px); }
+  100% { transform: translate(-1px, -1px); }
+}
+
+/* -------------------------------------------------------------------------
+   HUD corner-bracket card treatment (Iron Man UI nod).
+   ------------------------------------------------------------------------- */
+.hud-frame {
+  position: relative;
+  background: linear-gradient(180deg, var(--bg-card), var(--bg-elevated));
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  backdrop-filter: blur(6px);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.hud-frame::before,
+.hud-frame::after {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--accent);
+  opacity: 0.55;
+  transition: opacity 0.25s ease;
+}
+
+.hud-frame::before {
+  top: -1px;
+  left: -1px;
+  border-right: none;
+  border-bottom: none;
+}
+
+.hud-frame::after {
+  bottom: -1px;
+  right: -1px;
+  border-left: none;
+  border-top: none;
+}
+
+.hud-frame:hover {
+  border-color: var(--accent-soft);
+  box-shadow: var(--shadow-glow);
+  transform: translateY(-2px);
+}
+
+.hud-frame:hover::before,
+.hud-frame:hover::after {
+  opacity: 1;
+}
+
+/* -------------------------------------------------------------------------
+   Rune divider (Zelda / Elden Ring nod) — thin, used sparingly.
+   ------------------------------------------------------------------------- */
+.rune-divider {
+  border: none;
+  height: 1px;
+  margin: 2.5rem 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--rune-gold) 15%,
+    var(--rune-gold) 85%,
+    transparent
+  );
+  opacity: 0.4;
+}
+
+/* -------------------------------------------------------------------------
+   Badge / pill primitives.
+   ------------------------------------------------------------------------- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  padding: 0.2em 0.65em;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  background: var(--bg-elevated);
+}
+
+.badge-accent {
+  color: var(--bg);
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.badge-diff-easy { color: var(--diff-easy); border-color: var(--diff-easy); }
+.badge-diff-medium { color: var(--diff-medium); border-color: var(--diff-medium); }
+.badge-diff-hard { color: var(--diff-hard); border-color: var(--diff-hard); }
+.badge-diff-insane { color: var(--diff-insane); border-color: var(--diff-insane); }
+
+/* -------------------------------------------------------------------------
+   Hazard-stripe accent (Evangelion / NERV nod) — alerts only, used sparingly.
+   ------------------------------------------------------------------------- */
+.hazard-strip {
+  height: 4px;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--hazard),
+    var(--hazard) 8px,
+    var(--bg-elevated) 8px,
+    var(--bg-elevated) 16px
+  );
+  opacity: 0.7;
+  border-radius: 2px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.6em 1.2em;
+  border-radius: var(--radius);
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  background: transparent;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn:hover {
+  background: var(--accent);
+  color: var(--bg);
+  box-shadow: var(--shadow-glow);
+  text-decoration: none;
+}
+
+.grid {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.grid-2 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+.grid-3 { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+
+.section {
+  padding: 4rem 0;
+}
+
+.text-muted { color: var(--text-muted); }
+.text-dim { color: var(--text-dim); }
+.mono { font-family: var(--font-mono); }

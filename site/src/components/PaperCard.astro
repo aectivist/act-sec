@@ -1,0 +1,62 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  date: Date;
+  pdfPath: string;
+  authors: string[];
+  tags: string[];
+}
+
+const { title, description, date, pdfPath, authors, tags } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<div class="paper-card hud-frame">
+  <h3>{title}</h3>
+  {authors.length > 0 && <p class="mono text-dim authors">{authors.join(', ')}</p>}
+  <p class="text-muted desc">{description}</p>
+  <div class="tags">
+    {tags.map((t) => <span class="badge text-dim">#{t}</span>)}
+  </div>
+  <div class="paper-footer">
+    <span class="mono text-dim">{date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
+    <a href={base + pdfPath} target="_blank" rel="noopener noreferrer" class="btn">Download PDF</a>
+  </div>
+</div>
+
+<style>
+  .paper-card {
+    padding: 1.5rem;
+  }
+
+  h3 {
+    font-size: 1.1rem;
+  }
+
+  .authors {
+    font-size: 0.78rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .desc {
+    font-size: 0.9rem;
+    line-height: 1.55;
+    margin-bottom: 1rem;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .paper-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid var(--border-soft);
+    padding-top: 0.75rem;
+  }
+</style>

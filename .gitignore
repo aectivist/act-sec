@@ -1,0 +1,11 @@
+# The local-only admin dashboard must never reach GitHub. This exclusion is
+# absolute and intentional — see README.md for why. Do not remove this line.
+admin/
+
+# Astro site build artifacts / local state
+site/node_modules/
+site/dist/
+site/.astro/
+site/.env
+
+.DS_Store

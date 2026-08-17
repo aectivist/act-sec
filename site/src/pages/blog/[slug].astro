@@ -1,0 +1,146 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+const diffClass = `badge-diff-${post.data.difficulty.toLowerCase()}`;
+---
+
+<BaseLayout title={post.data.title} description={post.data.description}>
+  <article class="section container module-detail">
+    <div class="module-header hud-frame">
+      <div class="module-top">
+        <span class="mono module-num">
+          {post.data.moduleNumber ? `MOD-${String(post.data.moduleNumber).padStart(3, '0')}` : 'MOD-XXX'}
+        </span>
+        <span class={`badge ${diffClass}`}>{post.data.difficulty}</span>
+      </div>
+      <h1>{post.data.title}</h1>
+      <p class="text-muted">{post.data.description}</p>
+      <div class="module-meta">
+        <span class="badge">{post.data.category}</span>
+        {post.data.tags.map((t) => <span class="badge text-dim">#{t}</span>)}
+      </div>
+      <p class="mono text-dim date">
+        Published {post.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+        {post.data.updatedDate && ` · Updated ${post.data.updatedDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}`}
+      </p>
+    </div>
+
+    <div class="prose">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .module-detail {
+    max-width: 780px;
+  }
+
+  .module-header {
+    padding: 2rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .module-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .module-num {
+    color: var(--text-dim);
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+  }
+
+  .module-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin: 1rem 0;
+  }
+
+  .date {
+    font-size: 0.78rem;
+  }
+
+  .prose {
+    line-height: 1.75;
+    color: var(--text);
+  }
+
+  .prose :global(h2) {
+    margin-top: 2.5rem;
+    color: var(--accent);
+    font-size: 1.4rem;
+  }
+
+  .prose :global(h3) {
+    margin-top: 2rem;
+    font-size: 1.15rem;
+  }
+
+  .prose :global(p) {
+    margin: 1rem 0;
+    color: var(--text-muted);
+  }
+
+  .prose :global(a) {
+    color: var(--accent);
+  }
+
+  .prose :global(pre) {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem;
+    overflow-x: auto;
+  }
+
+  .prose :global(code) {
+    background: var(--bg-card);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
+
+  .prose :global(pre code) {
+    background: none;
+    padding: 0;
+  }
+
+  .prose :global(blockquote) {
+    border-left: 2px solid var(--accent);
+    margin: 1.5rem 0;
+    padding-left: 1rem;
+    color: var(--text-muted);
+  }
+
+  .prose :global(ul),
+  .prose :global(ol) {
+    color: var(--text-muted);
+    padding-left: 1.4rem;
+  }
+
+  .prose :global(img) {
+    max-width: 100%;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+  }
+</style>

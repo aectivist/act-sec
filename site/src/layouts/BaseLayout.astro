@@ -1,0 +1,54 @@
+---
+import '../styles/theme.css';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { siteConfig } from '../site.config';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = siteConfig.about.slice(0, 155) } = Astro.props;
+
+const overrideStyle = Object.entries(siteConfig.themeOverrides)
+  .map(([key, value]) => {
+    const cssVar = { accent: '--accent', accentSoft: '--accent-soft', bg: '--bg', bgElevated: '--bg-elevated' }[key];
+    return cssVar ? `${cssVar}: ${value};` : '';
+  })
+  .join(' ');
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const faviconMime: Record<string, string> = {
+  '.svg': 'image/svg+xml',
+  '.png': 'image/png',
+  '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
+  '.webp': 'image/webp',
+};
+const logoExt = siteConfig.logo.slice(siteConfig.logo.lastIndexOf('.'));
+---
+
+<!doctype html>
+<html lang="en" style={overrideStyle || undefined}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type={faviconMime[logoExt] || 'image/svg+xml'} href={base + siteConfig.logo} />
+    <title>{title} — {siteConfig.brand}</title>
+    <meta name="description" content={description} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <Nav />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

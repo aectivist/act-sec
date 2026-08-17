@@ -1,0 +1,72 @@
+---
+interface Props {
+  title: string;
+  issuer: string;
+  dateIssued: Date;
+  credentialId?: string;
+  credentialUrl?: string;
+  skills: string[];
+}
+
+const { title, issuer, dateIssued, credentialId, credentialUrl, skills } = Astro.props;
+---
+
+<div class="cert-card hud-frame">
+  <div class="cert-icon mono">◈</div>
+  <h3>{title}</h3>
+  <p class="issuer text-muted">{issuer}</p>
+  <p class="mono text-dim date">
+    Issued {dateIssued.toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}
+  </p>
+  {credentialId && <p class="mono text-dim cred-id">ID: {credentialId}</p>}
+  <div class="skills">
+    {skills.map((s) => <span class="badge text-dim">{s}</span>)}
+  </div>
+  {credentialUrl && (
+    <a href={credentialUrl} target="_blank" rel="noopener noreferrer" class="mono verify-link">
+      ↳ verify credential
+    </a>
+  )}
+</div>
+
+<style>
+  .cert-card {
+    padding: 1.5rem;
+    text-align: left;
+  }
+
+  .cert-icon {
+    color: var(--accent);
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 0 12px var(--accent-glow);
+  }
+
+  h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .issuer {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .date, .cred-id {
+    font-size: 0.75rem;
+    margin: 0.15rem 0;
+  }
+
+  .skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin: 0.75rem 0;
+  }
+
+  .verify-link {
+    display: inline-block;
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+  }
+</style>
