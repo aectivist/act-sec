@@ -229,19 +229,58 @@ code, pre {
 .badge-diff-insane { color: var(--diff-insane); border-color: var(--diff-insane); }
 
 /* -------------------------------------------------------------------------
-   Hazard-stripe accent (Evangelion / NERV nod) — alerts only, used sparingly.
+   Terminal primitives — blinking cursor + terminal-window chrome.
    ------------------------------------------------------------------------- */
-.hazard-strip {
-  height: 4px;
-  background: repeating-linear-gradient(
-    -45deg,
-    var(--hazard),
-    var(--hazard) 8px,
-    var(--bg-elevated) 8px,
-    var(--bg-elevated) 16px
-  );
-  opacity: 0.7;
-  border-radius: 2px;
+@keyframes blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+.kicker::after {
+  content: '_';
+  display: inline-block;
+  margin-left: 2px;
+  color: var(--accent);
+  animation: blink 1s steps(1) infinite;
+}
+
+.term-window {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, var(--bg-card), var(--bg-elevated));
+  overflow: hidden;
+}
+
+.term-bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.65rem 1rem;
+  border-bottom: 1px solid var(--border-soft);
+  background: var(--bg-elevated);
+}
+
+.term-dots {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.term-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--accent-dim);
+  border: 1px solid var(--accent-soft);
+}
+
+.term-path {
+  color: var(--text-dim);
+  font-size: 0.75rem;
+  letter-spacing: 0.03em;
+}
+
+.term-body {
+  padding: 2.5rem;
 }
 
 .btn {

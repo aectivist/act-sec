@@ -20,17 +20,14 @@ const diffClass = `badge-diff-${post.data.difficulty.toLowerCase()}`;
 ---
 
 <BaseLayout title={post.data.title} description={post.data.description}>
-  <article class="section container module-detail">
-    <div class="module-header hud-frame">
-      <div class="module-top">
-        <span class="mono module-num">
-          {post.data.moduleNumber ? `MOD-${String(post.data.moduleNumber).padStart(3, '0')}` : 'MOD-XXX'}
-        </span>
+  <article class="section container post-detail">
+    <div class="post-header hud-frame">
+      <div class="post-top">
         <span class={`badge ${diffClass}`}>{post.data.difficulty}</span>
       </div>
       <h1>{post.data.title}</h1>
       <p class="text-muted">{post.data.description}</p>
-      <div class="module-meta">
+      <div class="post-meta">
         <span class="badge">{post.data.category}</span>
         {post.data.tags.map((t) => <span class="badge text-dim">#{t}</span>)}
       </div>
@@ -47,29 +44,23 @@ const diffClass = `badge-diff-${post.data.difficulty.toLowerCase()}`;
 </BaseLayout>
 
 <style>
-  .module-detail {
+  .post-detail {
     max-width: 780px;
   }
 
-  .module-header {
+  .post-header {
     padding: 2rem;
     margin-bottom: 2.5rem;
   }
 
-  .module-top {
+  .post-top {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
     margin-bottom: 1rem;
   }
 
-  .module-num {
-    color: var(--text-dim);
-    font-size: 0.8rem;
-    letter-spacing: 0.08em;
-  }
-
-  .module-meta {
+  .post-meta {
     display: flex;
     flex-wrap: wrap;
     gap: 0.4rem;

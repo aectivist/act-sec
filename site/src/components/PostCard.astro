@@ -1,60 +1,52 @@
 ---
-// Renders a blog post as an HTB/THM-style "module" card.
+// Renders a blog post card.
 interface Props {
   slug: string;
   title: string;
   description: string;
   category: string;
   difficulty: 'Easy' | 'Medium' | 'Hard' | 'Insane';
-  moduleNumber?: number;
   tags: string[];
   pubDate: Date;
 }
 
-const { slug, title, description, category, difficulty, moduleNumber, tags, pubDate } = Astro.props;
+const { slug, title, description, category, difficulty, tags, pubDate } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const diffClass = `badge-diff-${difficulty.toLowerCase()}`;
 ---
 
-<a href={`${base}/blog/${slug}`} class="module-card hud-frame">
-  <div class="module-top">
-    <span class="mono module-num">{moduleNumber ? `MOD-${String(moduleNumber).padStart(3, '0')}` : 'MOD-XXX'}</span>
+<a href={`${base}/blog/${slug}`} class="post-card hud-frame">
+  <div class="post-top">
     <span class={`badge ${diffClass}`}>{difficulty}</span>
   </div>
   <h3>{title}</h3>
   <p class="text-muted desc">{description}</p>
-  <div class="module-meta">
+  <div class="post-meta">
     <span class="badge">{category}</span>
     {tags.slice(0, 3).map((t) => <span class="badge text-dim">#{t}</span>)}
   </div>
-  <div class="module-footer mono text-dim">
+  <div class="post-footer mono text-dim">
     {pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
   </div>
 </a>
 
 <style>
-  .module-card {
+  .post-card {
     display: flex;
     flex-direction: column;
     padding: 1.5rem;
     color: inherit;
   }
 
-  .module-card:hover {
+  .post-card:hover {
     text-decoration: none;
   }
 
-  .module-top {
+  .post-top {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
     margin-bottom: 0.75rem;
-  }
-
-  .module-num {
-    color: var(--text-dim);
-    font-size: 0.75rem;
-    letter-spacing: 0.08em;
   }
 
   h3 {
@@ -69,14 +61,14 @@ const diffClass = `badge-diff-${difficulty.toLowerCase()}`;
     flex-grow: 1;
   }
 
-  .module-meta {
+  .post-meta {
     display: flex;
     flex-wrap: wrap;
     gap: 0.4rem;
     margin-bottom: 1rem;
   }
 
-  .module-footer {
+  .post-footer {
     font-size: 0.75rem;
     border-top: 1px solid var(--border-soft);
     padding-top: 0.75rem;

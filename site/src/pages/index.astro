@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
-import ModuleCard from '../components/ModuleCard.astro';
+import PostCard from '../components/PostCard.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import { getCollection } from 'astro:content';
 
@@ -19,32 +19,31 @@ const featuredProjects = allProjects.filter((p) => p.data.featured).slice(0, 3);
 <BaseLayout title="Home">
   <Hero />
 
-  <section id="modules" class="section container">
+  <section id="blog" class="section container">
     <div class="section-head">
-      <h2 class="glitch" data-text="Modules">Modules</h2>
-      <p class="text-muted">Write-ups and deep dives, logged like training modules.</p>
+      <h2 class="glitch" data-text="Blog">Blog</h2>
+      <p class="text-muted">Write-ups and deep dives on security research and builds.</p>
     </div>
     {latestPosts.length > 0 ? (
       <div class="grid grid-3">
         {latestPosts.map((post) => (
-          <ModuleCard
+          <PostCard
             slug={post.slug}
             title={post.data.title}
             description={post.data.description}
             category={post.data.category}
             difficulty={post.data.difficulty}
-            moduleNumber={post.data.moduleNumber}
             tags={post.data.tags}
             pubDate={post.data.pubDate}
           />
         ))}
       </div>
     ) : (
-      <p class="text-dim mono">// no modules published yet</p>
+      <p class="text-dim mono">// no posts published yet</p>
     )}
     {allPosts.length > 6 && (
       <div class="see-all">
-        <a href={`${base}/blog`} class="btn">View all modules</a>
+        <a href={`${base}/blog`} class="btn">View all posts</a>
       </div>
     )}
   </section>

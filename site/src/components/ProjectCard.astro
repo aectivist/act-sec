@@ -11,9 +11,12 @@ interface Props {
 }
 
 const { title, description, tags, role, dateRange, githubUrl, liveUrl, featured } = Astro.props;
+const href = githubUrl || liveUrl;
+const Tag = href ? 'a' : 'div';
+const linkProps = href ? { href, target: '_blank', rel: 'noopener noreferrer' } : {};
 ---
 
-<div class="project-card hud-frame">
+<Tag class="project-card hud-frame" {...linkProps}>
   {featured && <span class="badge badge-accent featured-badge">Featured</span>}
   <h3>{title}</h3>
   {(role || dateRange) && (
@@ -25,11 +28,12 @@ const { title, description, tags, role, dateRange, githubUrl, liveUrl, featured 
   <div class="tags">
     {tags.map((t) => <span class="badge text-dim">#{t}</span>)}
   </div>
-  <div class="links">
-    {githubUrl && <a href={githubUrl} target="_blank" rel="noopener noreferrer" class="mono">↳ source</a>}
-    {liveUrl && <a href={liveUrl} target="_blank" rel="noopener noreferrer" class="mono">↳ live</a>}
-  </div>
-</div>
+  {href && (
+    <div class="links mono text-dim">
+      {githubUrl ? '↳ view on github' : '↳ view live'}
+    </div>
+  )}
+</Tag>
 
 <style>
   .project-card {
@@ -38,6 +42,11 @@ const { title, description, tags, role, dateRange, githubUrl, liveUrl, featured 
     display: flex;
     flex-direction: column;
     height: 100%;
+    color: inherit;
+  }
+
+  a.project-card:hover {
+    text-decoration: none;
   }
 
   .featured-badge {
@@ -70,8 +79,6 @@ const { title, description, tags, role, dateRange, githubUrl, liveUrl, featured 
   }
 
   .links {
-    display: flex;
-    gap: 1rem;
     border-top: 1px solid var(--border-soft);
     padding-top: 0.75rem;
     font-size: 0.8rem;

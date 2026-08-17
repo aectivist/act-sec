@@ -11,7 +11,6 @@ const blog = defineCollection({
       tags: z.array(z.string()).default([]),
       category: z.string().default('General'),
       difficulty: z.enum(['Easy', 'Medium', 'Hard', 'Insane']).default('Easy'),
-      moduleNumber: z.number().int().optional(),
       coverImage: image().optional().or(z.string().optional()),
       draft: z.boolean().default(false),
     }),

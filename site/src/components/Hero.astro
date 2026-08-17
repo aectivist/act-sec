@@ -6,20 +6,32 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 <section class="hero">
   <div class="container hero-inner">
-    <p class="mono kicker">// identity.init</p>
-    <h1 class="glitch" data-text={siteConfig.name}>{siteConfig.name}</h1>
-    <div class="titles mono">
-      {siteConfig.titles.map((t, i) => (
-        <>
-          <span>{t}</span>
-          {i < siteConfig.titles.length - 1 && <span class="sep">/</span>}
-        </>
-      ))}
-    </div>
-    <p class="about">{siteConfig.about}</p>
-    <div class="hero-actions">
-      <a class="btn" href="#modules">View modules</a>
-      <a class="btn" href={base + '/contact'}>Get in touch</a>
+    <div class="term-window">
+      <div class="term-bar">
+        <div class="term-dots">
+          <span class="term-dot"></span>
+          <span class="term-dot"></span>
+          <span class="term-dot"></span>
+        </div>
+        <span class="term-path mono">guest@{siteConfig.brand}:~$</span>
+      </div>
+      <div class="term-body">
+        <p class="mono kicker">// identity.init</p>
+        <h1 class="glitch" data-text={siteConfig.name}>{siteConfig.name}</h1>
+        <div class="titles mono">
+          {siteConfig.titles.map((t, i) => (
+            <>
+              <span>{t}</span>
+              {i < siteConfig.titles.length - 1 && <span class="sep">/</span>}
+            </>
+          ))}
+        </div>
+        <p class="about">{siteConfig.about}</p>
+        <div class="hero-actions">
+          <a class="btn" href="#blog">Read the blog</a>
+          <a class="btn" href={base + '/contact'}>Get in touch</a>
+        </div>
+      </div>
     </div>
   </div>
   <div class="scanline" aria-hidden="true"></div>

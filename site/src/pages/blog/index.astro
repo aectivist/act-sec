@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import ModuleCard from '../../components/ModuleCard.astro';
+import PostCard from '../../components/PostCard.astro';
 import { getCollection } from 'astro:content';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
@@ -8,30 +8,29 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 );
 ---
 
-<BaseLayout title="Blog" description="Write-ups and modules on offensive security and secure development.">
+<BaseLayout title="Blog" description="Write-ups on offensive security and secure development.">
   <section class="section container">
     <div class="page-head">
-      <p class="mono kicker">// modules.list</p>
-      <h1>Blog / Modules</h1>
-      <p class="text-muted">All write-ups, logged like a training path.</p>
+      <p class="mono kicker">// blog.list</p>
+      <h1>Blog</h1>
+      <p class="text-muted">All write-ups and posts.</p>
     </div>
     {posts.length > 0 ? (
       <div class="grid grid-3">
         {posts.map((post) => (
-          <ModuleCard
+          <PostCard
             slug={post.slug}
             title={post.data.title}
             description={post.data.description}
             category={post.data.category}
             difficulty={post.data.difficulty}
-            moduleNumber={post.data.moduleNumber}
             tags={post.data.tags}
             pubDate={post.data.pubDate}
           />
         ))}
       </div>
     ) : (
-      <p class="text-dim mono">// no modules published yet</p>
+      <p class="text-dim mono">// no posts published yet</p>
     )}
   </section>
 </BaseLayout>
