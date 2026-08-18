@@ -6,9 +6,8 @@ tags: []
 category: General
 difficulty: Easy
 draft: false
-coverImage: /uploads/1787068999856-554251.png
+coverImage: /uploads/1787069155732-400615.png
 ---
-
 
 <aside>
 
@@ -41,5 +40,3 @@ For the hands-on activity, we did a few things: assuming the attacker and host e
 After the activity, we were then asked on how to defend against these type of attacks in the future. In my opinion, while I did have answers in my head on how to protect systems, I was too shy to stand up and recite. 
 
 Overall, this was truly fun, and I learned so much from just this collaboration! I just hope that next time, I’ll be able to actually contribute a thought towards a discussion, and I hope that I may continue to learn with pursuit for the purpose of securing the world.
-
-!image.png
