@@ -13,7 +13,7 @@ const allPosts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 const latestPosts = allPosts.slice(0, 6);
 
 const allProjects = await getCollection('projects');
-const featuredProjects = allProjects.filter((p) => p.data.featured).slice(0, 3);
+const featuredProjects = allProjects.filter((p) => p.data.featured);
 ---
 
 <BaseLayout title="Home">
