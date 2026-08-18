@@ -1,14 +1,19 @@
 # act-sec
 
-Two completely separate applications live here:
+Two applications live here, kept structurally isolated:
 
 - **`site/`** — the public portfolio. An Astro static site, deployed to GitHub
-  Pages. This is the only thing that ever gets pushed to GitHub.
+  Pages.
 - **`admin/`** — a local-only admin dashboard used to author content
   (projects, certifications, blog posts, papers, site settings) and to
-  publish it by committing and pushing `site/` to GitHub. `admin/` has its
-  own separate local git history and is **never** pushed anywhere — it has
-  no GitHub remote, ever.
+  publish it by committing and pushing to GitHub.
+
+This repo's root (not `site/`) is what's actually connected to GitHub. The
+root **`.gitignore` excludes `admin/` entirely** — it is not possible for
+`admin/`'s code, data, or logs to end up in a commit here, regardless of
+which tool (this admin app, `git` directly, GitHub Desktop, ...) triggers
+it. `admin/src/services/gitPublish.js` also double-checks this itself before
+every commit and refuses to proceed if it ever finds `admin/` staged.
 
 ## 1. Public site (`site/`)
 
@@ -35,62 +40,61 @@ npm run preview   # preview the production build
 
 ### Connecting to GitHub Pages
 
-1. Create a new **empty** repository on GitHub named `act-sec` (or update
-   `base` in `site/astro.config.mjs` and `SITE_REPO_PATH`'s remote to match
-   whatever name you actually use).
-2. In `site/astro.config.mjs`, set `site` to `https://<your-username>.github.io`.
-3. From inside `site/`:
-   ```bash
-   git init
-   git add -A
-   git commit -m "Initial portfolio site"
-   git branch -M main
-   git remote add origin https://github.com/<your-username>/act-sec.git
-   git push -u origin main
-   ```
-4. On GitHub: **Settings → Pages → Source → GitHub Actions**. The included
-   workflow (`.github/workflows/deploy.yml`) builds and deploys on every
-   push to `main`.
-5. Your site will be live at `https://<your-username>.github.io/act-sec/`.
+1. Create a new repository on GitHub (**public** — GitHub Pages on a free
+   account requires it) and connect this project's root to it as `origin`.
+2. In `site/astro.config.mjs`, set `site` to `https://<your-username>.github.io`
+   and `base` to match your repo name.
+3. On GitHub: **Settings → Pages → Source → GitHub Actions**. The included
+   workflow (`.github/workflows/deploy.yml`, at the repo root) builds `site/`
+   and deploys on every push to `main` — it also auto-enables Pages itself
+   (`enablement: true`) if that step hasn't been done yet.
+4. Your site will be live at `https://<your-username>.github.io/<repo-name>/`.
 
 After this one-time setup, the admin dashboard's **Publish** button
-(`git add -A && git commit && git push`, scoped only to `site/`) does steps
-3–4 for you on every future content change.
+(`git add -A && git commit && git push`, scoped to this repo root, with
+`admin/` structurally excluded as above) does step 3 for you on every future
+content change.
 
 ## 2. Admin dashboard (`admin/`)
-
-This app is **local-only**. It binds to `127.0.0.1` and must never be
-exposed to the internet, put behind a public tunnel, or deployed anywhere.
 
 ```bash
 cd admin
 npm install
 cp .env.example .env
-# Generate a real secret and paste it into .env as SESSION_SECRET:
-node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"
-# Point SITE_REPO_PATH in .env at the site/ folder (default ../site is correct
-# if you keep the layout as-is).
+# Point SITE_REPO_PATH in .env at the repo root (default .. is correct if
+# you keep the layout as-is).
 
-npm run create-admin   # interactive prompt to create your first admin account
-npm start               # http://127.0.0.1:4322
+npm start   # http://127.0.0.1:4322
 ```
 
-Log in, and you'll be offered optional TOTP 2FA setup under **Account**
-(scan the QR code with an authenticator app; save the recovery codes shown
-once, they're not shown again).
+### ⚠️ There is no login
 
-### What the admin app enforces
+This app has **no authentication at all** — no password, no session, nothing.
+Its *only* protection is that it binds to `127.0.0.1` (`app.js`), so nothing
+outside the local machine can reach it. This is a deliberate tradeoff made
+for a single local user's convenience, not an oversight — but it means:
 
-- Argon2id password hashing, no public registration route (accounts are only
-  ever created via `npm run create-admin` on the local machine).
-- SQLite-backed sessions with rolling idle timeout + absolute session
-  lifetime, session ID regenerated on login.
-- CSRF tokens on every state-changing form.
-- Optional TOTP 2FA with hashed, single-use recovery codes.
-- Rate limiting + escalating account lockout on `/login` and `/login/verify-2fa`.
-- Full audit log (`audit_log` table, viewable under **Audit Log**) of every
-  auth event and content mutation, plus a mirrored append-only file at
-  `admin/logs/audit.log`.
+- **Never** change the bind address in `app.js` away from `127.0.0.1`.
+- **Never** put this behind a tunnel, reverse proxy, port-forward, or
+  anything else that makes it reachable from another device.
+- **Never** run it on a shared/multi-user machine, or trust it on a machine
+  where you'd run untrusted software — any local process or user account can
+  reach it exactly as easily as you can.
+- A malicious webpage open in the same browser could still try to submit
+  requests to `http://127.0.0.1:4322` purely because it's on localhost
+  (browsers don't block that). The one remaining defense against that is an
+  Origin/Referer check on all state-changing requests
+  (`admin/src/middleware/originCheck.js`) — it has no dependency on
+  login/sessions and stays in place regardless.
+
+### What's still in place
+
+- Security headers via Helmet (CSP, etc.).
+- Origin/Referer verification on every POST/PUT/PATCH/DELETE, rejecting
+  anything whose origin doesn't match this server.
+- An append-only audit log (`audit_log` table, viewable under **Audit Log**,
+  plus a mirrored file at `admin/logs/audit.log`) of every content mutation
+  and publish attempt.
 
 ### How content flows to the public site
 
@@ -98,14 +102,16 @@ Every CRUD action in the dashboard (Projects, Certifications, Blog Posts,
 Papers, Site Settings) writes directly into `site/src/content/...` (or
 `site/src/site.data.json` / `site/public/...` for settings and uploads) via
 `admin/src/services/contentWriter.js`. Nothing is live until you click
-**Publish**, which runs `git add -A && git commit && git push` scoped
-strictly to the `site/` directory (`admin/src/services/gitPublish.js`) —
-it cannot see or touch `admin/`'s own repo.
+**Publish**, which commits and pushes the repo root (`admin/src/services/gitPublish.js`)
+— `admin/` itself is excluded from that commit no matter what, per the
+isolation model described above.
 
 ## Directory layout
 
 ```
-act-sec/
-  site/     <- public, static, deployed to GitHub Pages
-  admin/    <- local-only, own separate git history, never pushed anywhere
+act-sec/                 <- this is the git repo connected to GitHub
+  .gitignore              <- excludes admin/ completely
+  .github/workflows/      <- deploy.yml builds+deploys site/ only
+  site/                   <- public, static, deployed to GitHub Pages
+  admin/                  <- local-only, gitignored, no login — see warning above
 ```
