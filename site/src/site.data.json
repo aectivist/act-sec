@@ -1,12 +1,12 @@
 {
-  "name": "Riel Valdepenas",
+  "name": "Azriel Valdepenas",
   "brand": "act-sec",
   "titles": [
     "Cybersecurity Practitioner",
     "Aspiring Penetration Tester",
     "Secure Software Developer"
   ],
-  "about": "Cybersecurity practitioner with hands-on experience in offensive security, web application security, and secure software development. Holds CompTIA Security+, PJPT, and PNPT certifications. Active participant in regional cybersecurity competitions, including multiple top placements, with a strong interest in penetration testing and application security.",
+  "about": "Cybersecurity practitioner with hands-on experience in offensive security, web application security, and secure software development. Holds CompTIA Security+, PJPT, PT1, and PNPT certifications. Active participant in regional cybersecurity competitions, including multiple top placements, with a strong interest in penetration testing and application security.",
   "logo": "/logo.svg",
   "contact": {
     "email": "aectevista@gmail.com",
@@ -24,8 +24,8 @@
       "icon": "globe"
     },
     {
-      "label": "Cylvern Security",
-      "url": "https://www.cylsec.com",
+      "label": "Youtube",
+      "url": "https://www.youtube.com/@Actvzt",
       "icon": "globe"
     }
   ],
