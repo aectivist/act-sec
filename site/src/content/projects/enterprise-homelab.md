@@ -12,7 +12,6 @@ tags:
 role: Builder / Operator
 dateRange: 2025 - Present
 featured: true
+coverImage: /uploads/1787069224898-245260.png
 ---
-Built a virtual enterprise lab consisting of 8 virtual machines, Windows Active Directory, Kali Linux, and intentionally vulnerable machines for penetration testing and defensive security practice.
 
-Deployed Wazuh SIEM/EDR to monitor endpoints, collect logs, and simulate detection and incident response workflows. Performed Active Directory enumeration, privilege escalation, and attack simulations on 10+ intentionally vulnerable machines.
